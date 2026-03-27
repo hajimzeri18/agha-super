@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agha Super Bot — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0b0f; --bg2:#0f1117; --card:#13151c; --border:#1e2130;
+  --text:#ffffff; --muted:#8b8fa8; --dim:#4a4d5e;
+  --accent:#5865f2; --accent2:#eb459e; --green:#57f287;
+  --grad:linear-gradient(135deg,#5865f2 0%,#eb459e 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+.bg-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.1;animation:float 10s ease-in-out infinite;}
+.orb1{width:700px;height:700px;background:#5865f2;top:-200px;left:-150px;}
+.orb2{width:600px;height:600px;background:#eb459e;bottom:-150px;right:-100px;animation-delay:-5s;}
+.orb3{width:400px;height:400px;background:#57f287;top:40%;left:50%;transform:translate(-50%,-50%);animation-delay:-3s;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(88,101,242,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(88,101,242,0.04) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+nav{position:fixed;top:0;left:0;right:0;height:70px;background:rgba(10,11,15,0.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 48px;z-index:100;}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-icon{width:42px;height:42px;background:var(--grad);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:white;box-shadow:0 0 24px rgba(88,101,242,0.4);}
+.logo-name{font-size:18px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.logo-dev{font-size:10px;color:var(--dim);font-family:'JetBrains Mono',monospace;}
+.nav-login{display:flex;align-items:center;gap:10px;background:#5865f2;color:white;font-size:14px;font-weight:700;padding:10px 24px;border-radius:10px;text-decoration:none;transition:all 0.2s;box-shadow:0 0 20px rgba(88,101,242,0.4);font-family:'Outfit',sans-serif;}
+.nav-login:hover{background:#4752c4;transform:translateY(-1px);box-shadow:0 6px 28px rgba(88,101,242,0.6);}
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:90px 24px 60px;}
+.badge{display:inline-flex;align-items:center;gap:8px;background:rgba(88,101,242,0.1);border:1px solid rgba(88,101,242,0.3);border-radius:100px;padding:6px 18px;font-size:13px;color:#a5acff;font-weight:500;margin-bottom:32px;animation:fadeup 0.6s ease both;}
+.pulse{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+h1{font-size:clamp(52px,8vw,96px);font-weight:900;line-height:1.03;letter-spacing:-3px;margin-bottom:24px;animation:fadeup 0.6s ease 0.1s both;}
+h1 span{display:block;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sub{font-size:18px;color:var(--muted);max-width:560px;line-height:1.75;margin-bottom:52px;animation:fadeup 0.6s ease 0.2s both;}
+.actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;animation:fadeup 0.6s ease 0.3s both;}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:var(--grad);color:white;font-size:16px;font-weight:700;padding:16px 36px;border-radius:14px;text-decoration:none;transition:all 0.3s;box-shadow:0 0 40px rgba(88,101,242,0.45);font-family:'Outfit',sans-serif;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 48px rgba(88,101,242,0.65);}
+.btn-secondary{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--text);font-size:16px;font-weight:600;padding:15px 32px;border-radius:14px;text-decoration:none;border:1px solid var(--border);transition:all 0.3s;font-family:'Outfit',sans-serif;}
+.btn-secondary:hover{border-color:var(--accent);background:rgba(88,101,242,0.06);transform:translateY(-2px);}
+.stats{display:flex;gap:48px;margin-top:72px;animation:fadeup 0.6s ease 0.4s both;flex-wrap:wrap;justify-content:center;}
+.stat{text-align:center;}
+.stat-n{font-size:34px;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-l{font-size:13px;color:var(--dim);font-weight:500;margin-top:4px;}
+.divider{width:1px;background:var(--border);align-self:stretch;}
+.features{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:80px 24px;}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;font-family:'JetBrains Mono',monospace;}
+.sec-title{font-size:clamp(30px,4vw,50px);font-weight:900;letter-spacing:-1px;margin-bottom:14px;}
+.sec-sub{color:var(--muted);font-size:17px;max-width:500px;line-height:1.7;margin-bottom:56px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.feat{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;transition:all 0.3s;}
+.feat:hover{border-color:rgba(88,101,242,0.4);transform:translateY(-4px);box-shadow:0 20px 60px rgba(88,101,242,0.12);}
+.feat-ico{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px;}
+.feat h3{font-size:17px;font-weight:700;margin-bottom:10px;}
+.feat p{font-size:14px;color:var(--muted);line-height:1.65;}
+.login-wrap{position:relative;z-index:1;display:flex;justify-content:center;padding:0 24px 100px;}
+.login-card{background:var(--card);border:1px solid var(--border);border-radius:28px;padding:56px 48px;max-width:460px;width:100%;text-align:center;position:relative;overflow:hidden;}
+.login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);}
+.login-ico{width:80px;height:80px;margin:0 auto 28px;background:linear-gradient(135deg,rgba(88,101,242,0.2),rgba(235,69,158,0.2));border:1px solid rgba(88,101,242,0.3);border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:38px;}
+.login-card h2{font-size:28px;font-weight:800;margin-bottom:12px;}
+.login-card p{color:var(--muted);font-size:15px;line-height:1.65;margin-bottom:36px;}
+.btn-discord{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;background:#5865f2;color:white;font-size:16px;font-weight:700;padding:16px;border-radius:14px;text-decoration:none;transition:all 0.3s;font-family:'Outfit',sans-serif;box-shadow:0 4px 32px rgba(88,101,242,0.45);}
+.btn-discord:hover{background:#4752c4;transform:translateY(-2px);box-shadow:0 8px 40px rgba(88,101,242,0.65);}
+.terms{margin-top:20px;font-size:12px;color:var(--dim);line-height:1.7;}
+.terms a{color:var(--accent);text-decoration:none;}
+footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:36px 48px;display:flex;align-items:center;justify-content:space-between;max-width:1140px;margin:0 auto;flex-wrap:wrap;gap:16px;}
+footer p{font-size:14px;color:var(--dim);}
+footer span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;}
+.foot-links{display:flex;gap:24px;}
+.foot-links a{color:var(--dim);text-decoration:none;font-size:13px;transition:color 0.2s;}
+.foot-links a:hover{color:var(--text);}
+@keyframes fadeup{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){.grid3{grid-template-columns:1fr;}.stats{gap:24px;}nav{padding:0 20px;}.actions{flex-direction:column;align-items:center;}}
+</style>
+</head>
+<body>
+<div class="bg-wrap">
+  <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+</div>
+<div class="grid-bg"></div>
+
+<nav>
+  <a href="/" class="logo">
+    <div class="logo-icon">A</div>
+    <div><div class="logo-name">Agha Super Bot</div><div class="logo-dev">by dev-h46</div></div>
+  </a>
+  <a href="/auth/discord" class="nav-login">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.1.122 18.14.149 18.16a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.1.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+    Login with Discord
+  </a>
+</nav>
+
+<section class="hero">
+  <div class="badge"><div class="pulse"></div> ✦ Most Powerful Discord Bot</div>
+  <h1>The Ultimate<span>Discord Bot</span></h1>
+  <p class="sub">Complete logging, moderation, and server management. Built for communities that demand the best — with a dashboard that makes everything effortless.</p>
+  <div class="actions">
+    <a href="/auth/discord" class="btn-primary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.1.122 18.14.149 18.16a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.1.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      Login to Dashboard
+    </a>
+    <a href="https://discord.com/oauth2/authorize?client_id=1469732247388160224&permissions=8&scope=bot%20applications.commands" target="_blank" class="btn-secondary">
+      ➕ Add Bot to Server
+    </a>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n">50K+</div><div class="stat-l">Servers</div></div>
+    <div class="divider"></div>
+    <div class="stat"><div class="stat-n">2M+</div><div class="stat-l">Members</div></div>
+    <div class="divider"></div>
+    <div class="stat"><div class="stat-n">99.9%</div><div class="stat-l">Uptime</div></div>
+    <div class="divider"></div>
+    <div class="stat"><div class="stat-n">30+</div><div class="stat-l">Log Events</div></div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="sec-label">// Features</div>
+  <h2 class="sec-title">Everything your server needs</h2>
+  <p class="sec-sub">From powerful logging to advanced moderation — all configurable in seconds.</p>
+  <div class="grid3">
+    <div class="feat"><div class="feat-ico" style="background:rgba(88,101,242,0.15)">📋</div><h3>Advanced Logging</h3><p>30+ log types — members, messages, channels, roles, voice and more. Color-coded embeds for every event.</p></div>
+    <div class="feat"><div class="feat-ico" style="background:rgba(237,66,69,0.15)">🛡️</div><h3>Moderation Suite</h3><p>Ban, kick, mute, timeout, warn. Auto-mod with anti-spam, anti-raid, and word filters.</p></div>
+    <div class="feat"><div class="feat-ico" style="background:rgba(87,242,135,0.15)">🎤</div><h3>Voice Tracking</h3><p>Monitor joins, leaves, mutes, deafens, channel switches — full voice state logging.</p></div>
+    <div class="feat"><div class="feat-ico" style="background:rgba(254,231,92,0.15)">⭐</div><h3>Server Management</h3><p>Auto-roles, welcome messages, goodbye messages, invite tracking and more.</p></div>
+    <div class="feat"><div class="feat-ico" style="background:rgba(235,69,158,0.15)">🎨</div><h3>Custom Colors</h3><p>Pick a custom color for each log type using the built-in color picker. Your server, your style.</p></div>
+    <div class="feat"><div class="feat-ico" style="background:rgba(88,101,242,0.15)">⚡</div><h3>Instant Setup</h3><p>Login with Discord, select your server, configure everything. No coding required.</p></div>
+  </div>
+</section>
+
+<div class="login-wrap">
+  <div class="login-card">
+    <div class="login-ico">🔐</div>
+    <h2>Login to Dashboard</h2>
+    <p>Sign in with your Discord account. Only servers where you have <strong style="color:#fee75c">Administrator</strong> permission will be shown.</p>
+    <a href="/auth/discord" class="btn-discord">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.1.122 18.14.149 18.16a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.1.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      Login with Discord
+    </a>
+    <p class="terms">By logging in you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 <span>Agha Super Bot</span> — Created by <span>dev-h46</span></p>
+  <div class="foot-links">
+    <a href="#">Terms</a><a href="#">Privacy</a><a href="#">Support</a>
+    <a href="https://discord.com/oauth2/authorize?client_id=1469732247388160224&permissions=8&scope=bot%20applications.commands" target="_blank">Invite Bot</a>
+  </div>
+</footer>
+</body>
+</html>

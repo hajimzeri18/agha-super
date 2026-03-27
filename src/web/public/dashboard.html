@@ -1,0 +1,2100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Agha Super Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0a0b0f;
+  --bg-secondary: #0f1117;
+  --bg-card: #13151c;
+  --bg-card2: #181b24;
+  --bg-hover: #1c1f2a;
+  --border: #1e2130;
+  --border-light: #252836;
+  --text-primary: #ffffff;
+  --text-secondary: #8b8fa8;
+  --text-muted: #4a4d5e;
+  --accent: #5865f2;
+  --accent-hover: #4752c4;
+  --accent2: #eb459e;
+  --accent3: #57f287;
+  --gold: #fee75c;
+  --red: #ed4245;
+  --orange: #f5a623;
+  --gradient: linear-gradient(135deg, #5865f2 0%, #eb459e 100%);
+  --sidebar-width: 260px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 200;
+  overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.sidebar-header {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  margin-bottom: 16px;
+}
+
+.logo-icon {
+  width: 38px; height: 38px;
+  background: var(--gradient);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 900; color: white;
+  box-shadow: 0 0 16px rgba(88,101,242,0.4);
+}
+
+.logo-text {
+  font-size: 16px; font-weight: 800;
+  background: var(--gradient);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.logo-sub { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+.server-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.server-select:hover { border-color: var(--accent); }
+
+.server-av {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--gradient);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: white;
+  flex-shrink: 0;
+}
+
+.server-info { flex: 1; min-width: 0; }
+.server-nm { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.server-id { font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+.chevron { color: var(--text-muted); font-size: 10px; }
+
+/* Sidebar Nav */
+.sidebar-nav { padding: 12px; flex: 1; }
+
+.nav-section {
+  margin-bottom: 6px;
+}
+.nav-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 8px 8px 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: 2px;
+}
+
+.nav-item:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.nav-item.active {
+  background: rgba(88,101,242,0.12);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.nav-item.active .nav-icon { color: var(--accent); }
+
+.nav-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto;
+  background: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 100px;
+}
+
+.nav-badge-red { background: var(--red); }
+
+/* Sidebar footer */
+.sidebar-footer {
+  padding: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+.user-av {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--gradient);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: white;
+  border: 2px solid rgba(88,101,242,0.4);
+  flex-shrink: 0;
+}
+
+.user-info { flex: 1; min-width: 0; }
+.user-nm { font-size: 13px; font-weight: 700; }
+.user-tag { font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+.user-actions { display: flex; gap: 4px; }
+.icon-btn {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.icon-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+/* ===== MAIN ===== */
+.main {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TOPBAR */
+.topbar {
+  height: 60px;
+  background: rgba(10,11,15,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-title {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  flex: 1;
+}
+
+.topbar-actions { display: flex; gap: 8px; }
+
+.btn-save {
+  background: var(--accent3);
+  color: #0a0b0f;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Outfit', sans-serif;
+  display: flex; align-items: center; gap: 6px;
+}
+.btn-save:hover { opacity: 0.85; transform: translateY(-1px); }
+
+.btn-reset {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.2s;
+}
+.btn-reset:hover { border-color: var(--red); color: var(--red); }
+
+/* ===== CONTENT AREA ===== */
+.content {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+/* PAGE TABS */
+.page-tabs {
+  display: none;
+}
+
+/* ACTIVE PAGE */
+.page { display: none; }
+.page.active { display: block; }
+
+/* SECTION HEADER */
+.section-header {
+  margin-bottom: 28px;
+}
+.section-header h2 {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+.section-header p { color: var(--text-secondary); font-size: 14px; }
+
+/* CARDS */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.card-title-wrap { display: flex; align-items: center; gap: 10px; }
+.card-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+
+.card-title { font-size: 15px; font-weight: 700; }
+.card-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+.card-body { padding: 24px; }
+
+/* TOGGLE */
+.toggle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toggle {
+  position: relative;
+  width: 48px; height: 26px;
+  cursor: pointer;
+}
+
+.toggle input { display: none; }
+
+.toggle-track {
+  position: absolute;
+  inset: 0;
+  background: var(--border-light);
+  border-radius: 100px;
+  transition: background 0.3s;
+}
+
+.toggle input:checked ~ .toggle-track { background: var(--accent); }
+
+.toggle-thumb {
+  position: absolute;
+  width: 20px; height: 20px;
+  background: white;
+  border-radius: 50%;
+  top: 3px; left: 3px;
+  transition: transform 0.3s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.toggle input:checked ~ .toggle-thumb { transform: translateX(22px); }
+
+/* LOGS GRID */
+.logs-grid {
+  display: grid;
+  gap: 12px;
+}
+
+/* LOG EVENT ROW */
+.log-event {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 16px;
+  transition: border-color 0.2s;
+}
+
+.log-event:hover { border-color: var(--border-light); }
+
+.log-event-left { display: flex; align-items: center; gap: 14px; }
+
+.log-event-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.log-event-info { }
+.log-event-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.log-event-desc { font-size: 12px; color: var(--text-muted); }
+
+/* CHANNEL SELECT */
+.channel-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  min-width: 175px;
+  transition: border-color 0.2s;
+  position: relative;
+}
+
+.channel-select:hover { border-color: var(--accent); }
+.channel-select.selected { color: var(--text-primary); border-color: rgba(88,101,242,0.3); }
+
+.channel-hash { color: var(--accent); font-weight: 700; margin-right: 2px; }
+.channel-chevron { margin-left: auto; color: var(--text-muted); font-size: 10px; }
+
+/* COLOR PICKER */
+.color-btn {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+}
+
+.color-btn:hover { transform: scale(1.1); border-color: var(--border-light); }
+
+/* COLOR PICKER POPUP */
+.color-popup {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+  width: 280px;
+}
+
+.color-popup.open { display: block; }
+
+.color-popup-header {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.color-popup-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
+}
+
+/* Gradient picker canvas */
+.grad-canvas {
+  width: 100%;
+  height: 160px;
+  border-radius: 10px;
+  cursor: crosshair;
+  display: block;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.grad-canvas canvas { width: 100%; height: 100%; border-radius: 10px; display: block; }
+
+/* Hue slider */
+.hue-slider-wrap {
+  position: relative;
+  height: 16px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#hueSlider {
+  width: 100%;
+  height: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(to right,
+    hsl(0,100%,50%),hsl(30,100%,50%),hsl(60,100%,50%),hsl(90,100%,50%),
+    hsl(120,100%,50%),hsl(150,100%,50%),hsl(180,100%,50%),hsl(210,100%,50%),
+    hsl(240,100%,50%),hsl(270,100%,50%),hsl(300,100%,50%),hsl(330,100%,50%),hsl(360,100%,50%));
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+#hueSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  cursor: pointer;
+}
+
+/* Alpha slider */
+.alpha-slider-wrap {
+  position: relative;
+  height: 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='4' height='4' fill='%23ccc'/%3E%3Crect x='4' y='4' width='4' height='4' fill='%23ccc'/%3E%3Crect x='4' y='0' width='4' height='4' fill='%23fff'/%3E%3Crect x='0' y='4' width='4' height='4' fill='%23fff'/%3E%3C/svg%3E");
+}
+
+#alphaSlider {
+  width: 100%;
+  height: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+}
+#alphaSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  cursor: pointer;
+}
+
+.color-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.color-preview-swatch {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+  flex-shrink: 0;
+}
+
+.color-hex-input {
+  flex: 1;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: 'JetBrains Mono', monospace;
+  outline: none;
+  width: 100%;
+}
+.color-hex-input:focus { border-color: var(--accent); }
+
+.color-presets {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+}
+
+.preset-dot {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.preset-dot:hover { transform: scale(1.15); }
+
+.color-popup-apply {
+  margin-top: 12px;
+  width: 100%;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 9px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: background 0.2s;
+}
+.color-popup-apply:hover { background: var(--accent-hover); }
+
+/* CHANNEL DROPDOWN */
+.channel-dropdown {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+  width: 220px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.channel-dropdown.open { display: block; }
+.channel-dropdown::-webkit-scrollbar { width: 4px; }
+.channel-dropdown::-webkit-scrollbar-track { background: transparent; }
+.channel-dropdown::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.dropdown-search {
+  width: 100%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+  margin-bottom: 8px;
+}
+.dropdown-search:focus { border-color: var(--accent); }
+.dropdown-search::placeholder { color: var(--text-muted); }
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.dropdown-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+.dropdown-item.selected { background: rgba(88,101,242,0.12); color: var(--accent); }
+.dropdown-hash { color: var(--accent); font-weight: 700; }
+
+/* CATEGORY in dropdown */
+.dropdown-cat {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+  padding: 6px 10px 4px;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* STATS GRID */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.stat-value { font-size: 28px; font-weight: 900; letter-spacing: -1px; }
+.stat-change { font-size: 12px; color: var(--accent3); margin-top: 4px; font-weight: 500; }
+
+/* OVERVIEW TABLE */
+.table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.table-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.table-title { font-size: 15px; font-weight: 700; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  padding: 12px 20px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  border-bottom: 1px solid var(--border);
+}
+
+td {
+  padding: 14px 20px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+.td-user { display: flex; align-items: center; gap: 10px; }
+.td-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--gradient);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: white;
+  flex-shrink: 0;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.badge-green { background: rgba(87,242,135,0.12); color: var(--accent3); }
+.badge-red { background: rgba(237,66,69,0.12); color: var(--red); }
+.badge-blue { background: rgba(88,101,242,0.12); color: var(--accent); }
+.badge-yellow { background: rgba(254,231,92,0.12); color: var(--gold); }
+.badge-orange { background: rgba(245,166,35,0.12); color: var(--orange); }
+.badge-pink { background: rgba(235,69,158,0.12); color: var(--accent2); }
+
+/* MODERATION */
+.mod-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.mod-action-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.mod-action-card:hover {
+  border-color: rgba(88,101,242,0.4);
+  transform: translateY(-2px);
+}
+
+.mod-action-icon { font-size: 28px; margin-bottom: 10px; }
+.mod-action-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.mod-action-desc { font-size: 12px; color: var(--text-muted); }
+
+/* FORM */
+.form-group { margin-bottom: 20px; }
+.form-label { font-size: 13px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.form-hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+
+.form-input {
+  width: 100%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.form-input:focus { border-color: var(--accent); }
+.form-input::placeholder { color: var(--text-muted); }
+
+.form-select {
+  width: 100%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238b8fa8' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+.form-select:focus { border-color: var(--accent); }
+.form-select option { background: #13151c; }
+
+/* AUTOMOD */
+.automod-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* NOTIFICATION TOAST */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--bg-card2);
+  border: 1px solid var(--accent3);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 9999;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  min-width: 260px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-icon { font-size: 20px; }
+
+/* BOT STATUS */
+.status-bar {
+  background: rgba(87,242,135,0.05);
+  border: 1px solid rgba(87,242,135,0.15);
+  border-radius: 12px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent3); flex-shrink: 0; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .main { margin-left: 0; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .automod-grid { grid-template-columns: 1fr; }
+  .mod-actions { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <a href="index.html" class="logo-wrap">
+      <div class="logo-icon">A</div>
+      <div>
+        <div class="logo-text">Agha Super Bot</div>
+        <div class="logo-sub">by dev-h46</div>
+      </div>
+    </a>
+
+    <div class="server-select" onclick="window.location='servers.html'">
+      <div class="server-av">🌐</div>
+      <div class="server-info">
+        <div class="server-nm">Agha's Community</div>
+        <div class="server-id">#812345678</div>
+      </div>
+      <span class="chevron">▾</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">
+      <div class="nav-section-label">// Overview</div>
+      <a class="nav-item active" onclick="showPage('overview')">
+        <span class="nav-icon">🏠</span> Dashboard
+      </a>
+      <a class="nav-item" onclick="showPage('stats')">
+        <span class="nav-icon">📊</span> Statistics
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">// Logs</div>
+      <a class="nav-item" onclick="showPage('logs')">
+        <span class="nav-icon">📋</span> Event Logs
+        <span class="nav-badge">30</span>
+      </a>
+      <a class="nav-item" onclick="showPage('audit')">
+        <span class="nav-icon">🔍</span> Audit History
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">// Moderation</div>
+      <a class="nav-item" onclick="showPage('moderation')">
+        <span class="nav-icon">🛡️</span> Moderation
+      </a>
+      <a class="nav-item" onclick="showPage('automod')">
+        <span class="nav-icon">🤖</span> Auto Mod
+        <span class="nav-badge nav-badge-red">!</span>
+      </a>
+      <a class="nav-item" onclick="showPage('warns')">
+        <span class="nav-icon">⚠️</span> Warnings
+      </a>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-label">// Settings</div>
+      <a class="nav-item" onclick="showPage('welcome')">
+        <span class="nav-icon">👋</span> Welcome / Goodbye
+      </a>
+      <a class="nav-item" onclick="showPage('autoroles')">
+        <span class="nav-icon">🏷️</span> Auto Roles
+      </a>
+      <a class="nav-item" onclick="showPage('settings')">
+        <span class="nav-icon">⚙️</span> Bot Settings
+      </a>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="user-av">U</div>
+      <div class="user-info">
+        <div class="user-nm">dev-h46</div>
+        <div class="user-tag">#0001</div>
+      </div>
+      <div class="user-actions">
+        <button class="icon-btn" title="Settings">⚙️</button>
+        <button class="icon-btn" title="Logout" onclick="window.location='index.html'">🚪</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== MAIN ===== -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Dashboard</div>
+    <div class="topbar-actions">
+      <button class="btn-reset" onclick="resetPage()">Reset</button>
+      <button class="btn-save" onclick="saveChanges()">✓ Save Changes</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ===== OVERVIEW PAGE ===== -->
+    <div class="page active" id="page-overview">
+      <div class="section-header">
+        <h2>Server Overview</h2>
+        <p>Agha's Community — Real-time stats and quick actions</p>
+      </div>
+
+      <div class="status-bar">
+        <div class="status-dot"></div>
+        <span>Agha Super Bot is <strong>online</strong> and fully operational — Ping: 32ms</span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">👥 Total Members</div>
+          <div class="stat-value">12,450</div>
+          <div class="stat-change">↑ +124 this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">🛡️ Mod Actions Today</div>
+          <div class="stat-value" style="color:var(--orange)">48</div>
+          <div class="stat-change" style="color:var(--text-muted)">↑ +12 vs yesterday</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">📋 Log Events Today</div>
+          <div class="stat-value" style="color:var(--accent)">1,284</div>
+          <div class="stat-change">↑ +89 since yesterday</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">⚠️ Active Warnings</div>
+          <div class="stat-value" style="color:var(--gold)">37</div>
+          <div class="stat-change" style="color:var(--text-muted)">Across 22 members</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">📋 Recent Audit Log</div>
+          <span style="font-size:12px;color:var(--text-muted)">Last 10 events</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Event</th>
+              <th>Moderator</th>
+              <th>Target</th>
+              <th>Reason</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="recentAuditTbody">
+            <tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text-muted);">⏳ Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== LOGS PAGE ===== -->
+    <div class="page" id="page-logs">
+      <div class="section-header">
+        <h2>📋 Event Logs</h2>
+        <p>Configure which events to log and where. Select a channel for each event type and customize the embed color.</p>
+      </div>
+
+      <div id="logEventsContainer" class="logs-grid"></div>
+    </div>
+
+    <!-- ===== AUDIT PAGE ===== -->
+    <div class="page" id="page-audit">
+      <div class="section-header">
+        <h2>🔍 Audit History</h2>
+        <p>Complete history of all logged events in your server.</p>
+      </div>
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">All Events</div>
+          <input type="text" placeholder="🔍 Search events..." style="background:var(--bg-primary);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text-primary);font-size:13px;font-family:Outfit,sans-serif;outline:none;width:220px;">
+        </div>
+        <table>
+          <thead><tr><th>Event</th><th>Moderator</th><th>Target</th><th>Reason</th><th>Time</th></tr></thead>
+          <tbody id="fullAuditTbody">
+            <tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text-muted);">⏳ Loading audit log...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== MODERATION PAGE ===== -->
+    <div class="page" id="page-moderation">
+      <div class="section-header">
+        <h2>🛡️ Moderation</h2>
+        <p>Ban, kick, mute, timeout, and manage members directly from the dashboard.</p>
+      </div>
+
+      <div class="mod-actions">
+        <div class="mod-action-card" onclick="openModModal('ban')">
+          <div class="mod-action-icon">🔨</div>
+          <div class="mod-action-name">Ban Member</div>
+          <div class="mod-action-desc">Permanently ban a user</div>
+        </div>
+        <div class="mod-action-card" onclick="openModModal('kick')">
+          <div class="mod-action-icon">👢</div>
+          <div class="mod-action-name">Kick Member</div>
+          <div class="mod-action-desc">Remove from server</div>
+        </div>
+        <div class="mod-action-card" onclick="openModModal('timeout')">
+          <div class="mod-action-icon">⏱️</div>
+          <div class="mod-action-name">Timeout</div>
+          <div class="mod-action-desc">Temporarily mute a user</div>
+        </div>
+        <div class="mod-action-card" onclick="openModModal('warn')">
+          <div class="mod-action-icon">⚠️</div>
+          <div class="mod-action-name">Warn Member</div>
+          <div class="mod-action-desc">Issue a formal warning</div>
+        </div>
+        <div class="mod-action-card" onclick="openModModal('unban')">
+          <div class="mod-action-icon">🔓</div>
+          <div class="mod-action-name">Unban Member</div>
+          <div class="mod-action-desc">Lift a ban</div>
+        </div>
+        <div class="mod-action-card" onclick="openModModal('move')">
+          <div class="mod-action-icon">🔀</div>
+          <div class="mod-action-name">Move Voice</div>
+          <div class="mod-action-desc">Move between voice channels</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-wrap">
+            <div class="card-icon" style="background:rgba(237,66,69,0.1)">⚙️</div>
+            <div>
+              <div class="card-title">Moderation Settings</div>
+              <div class="card-sub">Configure punishments and DM notifications</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="automod-grid">
+            <div class="form-group">
+              <div class="form-label">Mod Log Channel</div>
+              <select class="form-select">
+                <option>#mod-logs</option>
+                <option>#moderation</option>
+                <option>#admin-logs</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Mute Role</div>
+              <select class="form-select">
+                <option>@Muted</option>
+                <option>@Timeout</option>
+                <option>@Silenced</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div class="form-label">DM on Ban</div>
+              <div class="toggle-wrap">
+                <label class="toggle">
+                  <input type="checkbox" checked>
+                  <div class="toggle-track"></div>
+                  <div class="toggle-thumb"></div>
+                </label>
+                <span style="font-size:13px;color:var(--text-secondary)">Send DM when banned</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">DM on Kick</div>
+              <div class="toggle-wrap">
+                <label class="toggle">
+                  <input type="checkbox" checked>
+                  <div class="toggle-track"></div>
+                  <div class="toggle-thumb"></div>
+                </label>
+                <span style="font-size:13px;color:var(--text-secondary)">Send DM when kicked</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AUTO MOD PAGE ===== -->
+    <div class="page" id="page-automod">
+      <div class="section-header">
+        <h2>🤖 Auto Moderation</h2>
+        <p>Automatically detect and handle rule violations without manual intervention.</p>
+      </div>
+      <div class="automod-grid">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="card-icon" style="background:rgba(237,66,69,0.1)">🚫</div>
+              <div><div class="card-title">Anti-Spam</div></div>
+            </div>
+            <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="form-label">Max messages / 5 seconds</div>
+              <input type="number" class="form-input" value="5" min="1" max="20">
+            </div>
+            <div class="form-group">
+              <div class="form-label">Action</div>
+              <select class="form-select"><option>Timeout 60s</option><option>Delete + Warn</option><option>Kick</option></select>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="card-icon" style="background:rgba(254,231,92,0.1)">💬</div>
+              <div><div class="card-title">Bad Words Filter</div></div>
+            </div>
+            <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="form-label">Banned Words</div>
+              <textarea class="form-input" rows="4" placeholder="word1, word2, word3..." style="resize:vertical">spam, scam, discord.gg</textarea>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Action</div>
+              <select class="form-select"><option>Delete Message</option><option>Delete + Warn</option><option>Timeout</option></select>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="card-icon" style="background:rgba(88,101,242,0.1)">🔗</div>
+              <div><div class="card-title">Anti-Link</div></div>
+            </div>
+            <label class="toggle"><input type="checkbox"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="form-label">Block Discord Invites</div>
+              <div class="toggle-wrap"><label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label><span style="font-size:13px;color:var(--text-secondary)">Block all discord.gg links</span></div>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Block External Links</div>
+              <div class="toggle-wrap"><label class="toggle"><input type="checkbox"><div class="toggle-track"></div><div class="toggle-thumb"></div></label><span style="font-size:13px;color:var(--text-secondary)">Block http/https links</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="card-icon" style="background:rgba(235,69,158,0.1)">🎭</div>
+              <div><div class="card-title">Anti-Raid</div></div>
+            </div>
+            <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="form-label">Join threshold (per minute)</div>
+              <input type="number" class="form-input" value="10" min="1" max="100">
+            </div>
+            <div class="form-group">
+              <div class="form-label">Action</div>
+              <select class="form-select"><option>Enable Lockdown</option><option>Kick New Accounts</option><option>Ban New Accounts</option></select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== WARNINGS PAGE ===== -->
+    <div class="page" id="page-warns">
+      <div class="section-header">
+        <h2>⚠️ Member Warnings</h2>
+        <p>View and manage all active warnings across your server.</p>
+      </div>
+      <div class="table-wrap">
+        <div class="table-header">
+          <div class="table-title">Active Warnings (37)</div>
+          <input type="text" placeholder="🔍 Search member..." style="background:var(--bg-primary);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text-primary);font-size:13px;font-family:Outfit,sans-serif;outline:none;width:200px;">
+        </div>
+        <table>
+          <thead><tr><th>Member</th><th>Warnings</th><th>Reason</th><th>Moderator</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="td-user"><div class="td-avatar">T</div>TrollUser#789</div></td><td><span class="badge badge-red">3 warns</span></td><td>Spam, Toxicity</td><td>Mod_Ahmed</td><td style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace">2025-02-15</td><td><button style="background:rgba(237,66,69,0.1);border:1px solid rgba(237,66,69,0.2);color:var(--red);font-size:12px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:Outfit,sans-serif">Clear</button></td></tr>
+            <tr><td><div class="td-user"><div class="td-avatar" style="background:linear-gradient(135deg,#fee75c,#f5a623)">B</div>BadGuy#101</div></td><td><span class="badge badge-orange">2 warns</span></td><td>Off-topic posts</td><td>Mod_Sara</td><td style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace">2025-02-14</td><td><button style="background:rgba(237,66,69,0.1);border:1px solid rgba(237,66,69,0.2);color:var(--red);font-size:12px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:Outfit,sans-serif">Clear</button></td></tr>
+            <tr><td><div class="td-user"><div class="td-avatar" style="background:linear-gradient(135deg,#5865f2,#eb459e)">S</div>SpamUser#222</div></td><td><span class="badge badge-yellow">1 warn</span></td><td>Posting spam links</td><td>AutoMod</td><td style="font-size:12px;color:var(--text-muted);font-family:'JetBrains Mono',monospace">2025-02-16</td><td><button style="background:rgba(237,66,69,0.1);border:1px solid rgba(237,66,69,0.2);color:var(--red);font-size:12px;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:Outfit,sans-serif">Clear</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== WELCOME PAGE ===== -->
+    <div class="page" id="page-welcome">
+      <div class="section-header">
+        <h2>👋 Welcome & Goodbye</h2>
+        <p>Configure welcome and farewell messages for new and leaving members.</p>
+      </div>
+      <div class="automod-grid">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-wrap"><div class="card-icon" style="background:rgba(87,242,135,0.1)">👋</div><div><div class="card-title">Welcome Message</div></div></div>
+            <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="form-label">Channel</div>
+              <select class="form-select"><option>#welcome</option><option>#general</option><option>#arrivals</option></select>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Message</div>
+              <textarea class="form-input" rows="4" style="resize:vertical">Welcome {user} to {server}! You are member #{count}. Please read the rules!</textarea>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-wrap"><div class="card-icon" style="background:rgba(237,66,69,0.1)">👋</div><div><div class="card-title">Goodbye Message</div></div></div>
+            <label class="toggle"><input type="checkbox"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="form-label">Channel</div>
+              <select class="form-select"><option>#general</option><option>#goodbye</option><option>#departures</option></select>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Message</div>
+              <textarea class="form-input" rows="4" style="resize:vertical">{user} has left the server. We had {count} members.</textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== AUTO ROLES PAGE ===== -->
+    <div class="page" id="page-autoroles">
+      <div class="section-header">
+        <h2>🏷️ Auto Roles</h2>
+        <p>Automatically assign roles when members join your server.</p>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-wrap"><div class="card-icon" style="background:rgba(88,101,242,0.1)">🏷️</div><div><div class="card-title">Auto Role Settings</div></div></div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <div class="form-label">Role to assign on join</div>
+            <select class="form-select"><option>@Member</option><option>@Guest</option><option>@New</option></select>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Delay (seconds)</div>
+            <input type="number" class="form-input" value="0" min="0" max="3600">
+            <div class="form-hint">Set to 0 for immediate assignment. Use a delay for verification systems.</div>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Apply to Bots</div>
+            <div class="toggle-wrap"><label class="toggle"><input type="checkbox"><div class="toggle-track"></div><div class="toggle-thumb"></div></label><span style="font-size:13px;color:var(--text-secondary)">Also assign to bots that join</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS PAGE ===== -->
+    <div class="page" id="page-settings">
+      <div class="section-header">
+        <h2>⚙️ Bot Settings</h2>
+        <p>Configure general bot behavior for your server.</p>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title-wrap"><div class="card-icon" style="background:rgba(88,101,242,0.1)">⚙️</div><div><div class="card-title">General Settings</div></div></div></div>
+        <div class="card-body">
+          <div class="automod-grid">
+            <div class="form-group">
+              <div class="form-label">Bot Prefix</div>
+              <input type="text" class="form-input" value="!" placeholder="!">
+            </div>
+            <div class="form-group">
+              <div class="form-label">Language</div>
+              <select class="form-select"><option>English</option><option>Arabic</option><option>Spanish</option><option>French</option></select>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Bot Timezone</div>
+              <select class="form-select"><option>UTC</option><option>UTC+3 (Gulf)</option><option>UTC-5 (EST)</option><option>UTC+1 (CET)</option></select>
+            </div>
+            <div class="form-group">
+              <div class="form-label">Admin Roles</div>
+              <select class="form-select" multiple style="height:90px"><option>@Admin</option><option selected>@Moderator</option><option>@Staff</option></select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STATS PAGE ===== -->
+    <div class="page" id="page-stats">
+      <div class="section-header"><h2>📊 Statistics</h2><p>Server activity over time.</p></div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">📨 Messages Today</div><div class="stat-value">8,420</div><div class="stat-change">↑ +12% vs yesterday</div></div>
+        <div class="stat-card"><div class="stat-label">👥 Members Joined</div><div class="stat-value" style="color:var(--accent3)">124</div><div class="stat-change">This week</div></div>
+        <div class="stat-card"><div class="stat-label">🎤 Voice Hours</div><div class="stat-value" style="color:var(--accent)">342h</div><div class="stat-change">This week</div></div>
+        <div class="stat-card"><div class="stat-label">🛡️ Violations Caught</div><div class="stat-value" style="color:var(--orange)">289</div><div class="stat-change">This month</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">📈 Activity Chart (Placeholder)</div></div>
+        <div class="card-body" style="display:flex;align-items:center;justify-content:center;height:200px;color:var(--text-muted);font-size:14px;">
+          📊 Chart would render here (Chart.js integration)
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ===== CHANNEL DROPDOWN ===== -->
+<div class="channel-dropdown" id="channelDropdown">
+  <input class="dropdown-search" type="text" placeholder="Search channels..." oninput="filterDropdown(this.value)">
+  <div id="dropdownList"></div>
+</div>
+
+<!-- ===== COLOR PICKER POPUP ===== -->
+<div class="color-popup" id="colorPopup">
+  <div class="color-popup-header">
+    <span>Pick a Color</span>
+    <button class="color-popup-close" onclick="closeColorPicker()">✕</button>
+  </div>
+  <div class="grad-canvas"><canvas id="gradCanvas" width="248" height="160"></canvas></div>
+  <input type="range" id="hueSlider" min="0" max="360" value="240" oninput="updateGradient()">
+  <div class="color-preview-row">
+    <div class="color-preview-swatch" id="colorSwatch"></div>
+    <input type="text" class="color-hex-input" id="colorHexInput" value="#5865f2" oninput="hexInputChanged(this.value)" maxlength="7" placeholder="#ffffff">
+  </div>
+  <div class="color-presets" id="colorPresets"></div>
+  <button class="color-popup-apply" onclick="applyColor()">Apply Color</button>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✅</span>
+  <span id="toast-msg">Settings saved successfully!</span>
+</div>
+
+<script>
+// ===== PAGE NAVIGATION =====
+const pageTitles = {
+  overview: 'Dashboard',
+  logs: 'Event Logs',
+  audit: 'Audit History',
+  moderation: 'Moderation',
+  automod: 'Auto Moderation',
+  warns: 'Warnings',
+  welcome: 'Welcome & Goodbye',
+  autoroles: 'Auto Roles',
+  settings: 'Bot Settings',
+  stats: 'Statistics'
+};
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id)?.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick')?.includes(id)) n.classList.add('active');
+  });
+  document.getElementById('topbar-title').textContent = pageTitles[id] || 'Dashboard';
+}
+
+// ===== LOG EVENTS DATA =====
+const logEvents = [
+  // Member Events
+  { group: '👥 Member Events', events: [
+    { id: 'member_joined', icon: '👋', color: '#57f287', name: 'Member Joined', desc: 'When a new member joins the server', bg: 'rgba(87,242,135,0.1)' },
+    { id: 'member_left', icon: '🚪', color: '#ed4245', name: 'Member Left', desc: 'When a member leaves or is removed from the server', bg: 'rgba(237,66,69,0.1)' },
+    { id: 'member_banned', icon: '🔨', color: '#ed4245', name: 'Member Banned', desc: 'When a member is banned from the server', bg: 'rgba(237,66,69,0.1)' },
+    { id: 'member_unbanned', icon: '🔓', color: '#57f287', name: 'Member Unbanned', desc: 'When a member\'s ban is lifted', bg: 'rgba(87,242,135,0.1)' },
+    { id: 'member_kicked', icon: '👢', color: '#f5a623', name: 'Member Kicked', desc: 'When a member is kicked from the server', bg: 'rgba(245,166,35,0.1)' },
+    { id: 'timeout_given', icon: '⏱️', color: '#f5a623', name: 'Timeout Given', desc: 'When a member receives a timeout', bg: 'rgba(245,166,35,0.1)' },
+    { id: 'timeout_removed', icon: '⏱️', color: '#57f287', name: 'Timeout Removed', desc: 'When a member\'s timeout is lifted', bg: 'rgba(87,242,135,0.1)' },
+    { id: 'nickname_changed', icon: '✏️', color: '#eb459e', name: 'Nickname Changed', desc: 'When a member changes their nickname', bg: 'rgba(235,69,158,0.1)' },
+    { id: 'role_given', icon: '🏷️', color: '#5865f2', name: 'Role Given', desc: 'When a role is assigned to a member', bg: 'rgba(88,101,242,0.1)' },
+    { id: 'role_removed', icon: '🏷️', color: '#ed4245', name: 'Role Removed', desc: 'When a role is removed from a member', bg: 'rgba(237,66,69,0.1)' },
+    { id: 'mod_command', icon: '🛡️', color: '#fee75c', name: 'Moderation Command Used', desc: 'When a moderation command is executed', bg: 'rgba(254,231,92,0.1)' },
+  ]},
+  // Message Events
+  { group: '💬 Message Events', events: [
+    { id: 'message_deleted', icon: '🗑️', color: '#ed4245', name: 'Message Deleted', desc: 'When a message is deleted in any channel', bg: 'rgba(237,66,69,0.1)' },
+    { id: 'message_edited', icon: '📝', color: '#fee75c', name: 'Message Edited', desc: 'When a message is edited, showing before/after', bg: 'rgba(254,231,92,0.1)' },
+  ]},
+  // Channel Events
+  { group: '📢 Channel Events', events: [
+    { id: 'channel_created', icon: '➕', color: '#57f287', name: 'Channel Created', desc: 'When a new channel is created', bg: 'rgba(87,242,135,0.1)' },
+    { id: 'channel_deleted', icon: '➖', color: '#ed4245', name: 'Channel Deleted', desc: 'When a channel is deleted', bg: 'rgba(237,66,69,0.1)' },
+    { id: 'channel_updated', icon: '🔧', color: '#5865f2', name: 'Channel Updated', desc: 'When a channel\'s name or topic changes', bg: 'rgba(88,101,242,0.1)' },
+    { id: 'channel_perms', icon: '🔐', color: '#eb459e', name: 'Channel Permissions Updated', desc: 'When channel permissions are modified', bg: 'rgba(235,69,158,0.1)' },
+    { id: 'thread_created', icon: '🧵', color: '#57f287', name: 'Thread Created', desc: 'When a new thread is created', bg: 'rgba(87,242,135,0.1)' },
+    { id: 'thread_deleted', icon: '🧵', color: '#ed4245', name: 'Thread Deleted', desc: 'When a thread is deleted', bg: 'rgba(237,66,69,0.1)' },
+    { id: 'thread_updated', icon: '🧵', color: '#5865f2', name: 'Thread Updated', desc: 'When a thread is updated or archived', bg: 'rgba(88,101,242,0.1)' },
+  ]},
+  // Role Events
+  { group: '🎭 Role Events', events: [
+    { id: 'role_created', icon: '✨', color: '#57f287', name: 'Role Created', desc: 'When a new role is created', bg: 'rgba(87,242,135,0.1)' },
+    { id: 'role_deleted', icon: '💥', color: '#ed4245', name: 'Role Deleted', desc: 'When a role is deleted', bg: 'rgba(237,66,69,0.1)' },
+    { id: 'role_updated', icon: '🎨', color: '#5865f2', name: 'Role Updated', desc: 'When a role\'s name, color or permissions change', bg: 'rgba(88,101,242,0.1)' },
+  ]},
+  // Voice Events
+  { group: '🎤 Voice Events', events: [
+    { id: 'voice_join', icon: '🎤', color: '#57f287', name: 'Member Joined Voice Channel', desc: 'When a member joins a voice channel', bg: 'rgba(87,242,135,0.1)' },
+    { id: 'voice_leave', icon: '🔇', color: '#ed4245', name: 'Member Left Voice Channel', desc: 'When a member leaves a voice channel', bg: 'rgba(237,66,69,0.1)' },
+    { id: 'voice_switch', icon: '🔀', color: '#5865f2', name: 'Member Switched Voice Channels', desc: 'When a member moves between voice channels', bg: 'rgba(88,101,242,0.1)' },
+    { id: 'voice_moved', icon: '➡️', color: '#f5a623', name: 'Member Moved to Another Voice', desc: 'When a member is moved by a moderator', bg: 'rgba(245,166,35,0.1)' },
+    { id: 'voice_disconnected', icon: '🚫', color: '#ed4245', name: 'Member Disconnected from Voice', desc: 'When a member is disconnected by a moderator', bg: 'rgba(237,66,69,0.1)' },
+    { id: 'voice_mute', icon: '🔕', color: '#fee75c', name: 'Voice State (Mute/Deafen)', desc: 'When a member is server muted or deafened', bg: 'rgba(254,231,92,0.1)' },
+  ]},
+  // Server Events
+  { group: '🏠 Server Events', events: [
+    { id: 'server_updated', icon: '🏠', color: '#5865f2', name: 'Server Updated', desc: 'When server name, icon, or settings change', bg: 'rgba(88,101,242,0.1)' },
+    { id: 'invite_created', icon: '📨', color: '#eb459e', name: 'Server Invites', desc: 'When invite links are created or used', bg: 'rgba(235,69,158,0.1)' },
+  ]},
+];
+
+
+const presetColors = ['#5865f2','#57f287','#ed4245','#fee75c','#f5a623','#eb459e','#ffffff','#00d4ff','#ff6b6b','#ffd93d','#6bcb77','#4d96ff','#c77dff','#ff9f1c','#2ec4b6','#e71d36'];
+
+let eventStates = {};
+let currentColorTarget = null;
+let currentHue = 240;
+let colorPos = { x: 0.3, y: 0.3 };
+
+// ===== BUILD LOG EVENTS UI =====
+function buildLogEvents() {
+  const container = document.getElementById('logEventsContainer');
+  container.innerHTML = '';
+
+  logEvents.forEach(group => {
+    const groupEl = document.createElement('div');
+    groupEl.innerHTML = `
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);padding:8px 0 10px;font-family:'JetBrains Mono',monospace;">${group.group}</div>
+    `;
+    container.appendChild(groupEl);
+
+    const grid = document.createElement('div');
+    grid.className = 'logs-grid';
+    grid.style.marginBottom = '16px';
+
+    group.events.forEach(ev => {
+      if (!eventStates[ev.id]) {
+        eventStates[ev.id] = { enabled: false, channel: null, color: ev.color };
+      }
+      const state = eventStates[ev.id];
+
+      const row = document.createElement('div');
+      row.className = 'log-event';
+      row.id = 'row-' + ev.id;
+      row.innerHTML = `
+        <div class="log-event-left">
+          <div class="log-event-icon" style="background:${ev.bg}">${ev.icon}</div>
+          <div class="log-event-info">
+            <div class="log-event-name">${ev.name}</div>
+            <div class="log-event-desc">${ev.desc}</div>
+          </div>
+        </div>
+        <div class="channel-select ${state.channel ? 'selected' : ''}" id="ch-${ev.id}" onclick="openChannelDropdown('${ev.id}', this)">
+          <span class="channel-hash">#</span>
+          <span id="ch-text-${ev.id}">${state.channel || 'Select channel..'}</span>
+          <span class="channel-chevron">▾</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="color-btn" id="col-${ev.id}" style="background:${state.color}" onclick="openColorPicker('${ev.id}', this)" title="Pick color"></div>
+          <label class="toggle">
+            <input type="checkbox" ${state.enabled ? 'checked' : ''} onchange="toggleEvent('${ev.id}', this.checked)">
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+        </div>
+      `;
+      grid.appendChild(row);
+    });
+
+    container.appendChild(grid);
+  });
+}
+
+// ===== TOGGLE EVENT =====
+function toggleEvent(id, enabled) {
+  eventStates[id].enabled = enabled;
+}
+
+// ===== CHANNEL DROPDOWN — REAL SERVER CHANNELS =====
+let currentChannelTarget = null;
+let currentChannelEl = null;
+let realChannels = []; // loaded from API: [{id, name, parentName}]
+
+function openChannelDropdown(evId, triggerEl) {
+  const dropdown = document.getElementById('channelDropdown');
+  currentChannelTarget = evId;
+  currentChannelEl = triggerEl;
+
+  buildDropdownList('');
+  dropdown.querySelector('.dropdown-search').value = '';
+
+  const rect = triggerEl.getBoundingClientRect();
+  let left = rect.left;
+  let top = rect.bottom + 6;
+  if (left + 240 > window.innerWidth) left = window.innerWidth - 248;
+  if (top + 320 > window.innerHeight) top = rect.top - 326;
+  dropdown.style.left = left + 'px';
+  dropdown.style.top = top + 'px';
+  dropdown.style.width = Math.max(rect.width, 220) + 'px';
+  dropdown.classList.add('open');
+
+  setTimeout(() => dropdown.querySelector('.dropdown-search')?.focus(), 50);
+  setTimeout(() => document.addEventListener('click', closeDropdownOutside, { once: true }), 100);
+}
+
+function buildDropdownList(filter) {
+  const list = document.getElementById('dropdownList');
+  list.innerHTML = '';
+  const q = filter.toLowerCase().trim();
+  const selectedId = eventStates[currentChannelTarget]?.channelId;
+
+  // Show loading if channels not loaded yet
+  if (!realChannels || realChannels.length === 0) {
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:#4a4d5e;font-size:13px;">⏳ Loading channels...<br>Make sure the bot is in this server.</div>';
+    return;
+  }
+
+  // Group channels by category
+  const grouped = {};
+  realChannels.forEach(ch => {
+    if (q && !ch.name.toLowerCase().includes(q)) return;
+    const cat = ch.parentName ? ch.parentName.toUpperCase() : 'NO CATEGORY';
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(ch);
+  });
+
+  if (Object.keys(grouped).length === 0) {
+    list.innerHTML = `<div style="padding:16px;text-align:center;color:#4a4d5e;font-size:13px;">No channels match "${filter}"</div>`;
+    return;
+  }
+
+  Object.entries(grouped).forEach(([cat, chList]) => {
+    const catEl = document.createElement('div');
+    catEl.className = 'dropdown-cat';
+    catEl.textContent = cat;
+    list.appendChild(catEl);
+
+    chList.forEach(ch => {
+      const item = document.createElement('div');
+      item.className = 'dropdown-item' + (selectedId === ch.id ? ' selected' : '');
+      item.innerHTML = `<span class="dropdown-hash">#</span>${ch.name}`;
+      item.onclick = (e) => { e.stopPropagation(); selectChannel(ch.id, ch.name); };
+      list.appendChild(item);
+    });
+  });
+}
+
+function filterDropdown(val) {
+  buildDropdownList(val);
+}
+
+function selectChannel(channelId, channelName) {
+  if (!currentChannelTarget) return;
+  eventStates[currentChannelTarget].channelId = channelId;
+  eventStates[currentChannelTarget].channel = channelName;
+  const chEl = document.getElementById('ch-' + currentChannelTarget);
+  const textEl = document.getElementById('ch-text-' + currentChannelTarget);
+  if (chEl) chEl.classList.add('selected');
+  if (textEl) textEl.textContent = channelName;
+  document.getElementById('channelDropdown').classList.remove('open');
+}
+
+function closeDropdownOutside(e) {
+  const dropdown = document.getElementById('channelDropdown');
+  if (!dropdown.contains(e.target) && !currentChannelEl?.contains(e.target)) {
+    dropdown.classList.remove('open');
+  }
+}
+
+function closeColorDropdown() {
+  document.getElementById('channelDropdown').classList.remove('open');
+}
+
+// ===== COLOR PICKER =====
+let gradCanvas, gradCtx;
+let activeColorBtn = null;
+
+function initColorPicker() {
+  gradCanvas = document.getElementById('gradCanvas');
+  gradCtx = gradCanvas.getContext('2d');
+  drawGradient();
+  buildPresets();
+
+  gradCanvas.addEventListener('mousedown', onGradMouseDown);
+  gradCanvas.addEventListener('touchstart', onGradTouch, { passive: false });
+}
+
+function buildPresets() {
+  const container = document.getElementById('colorPresets');
+  container.innerHTML = '';
+  presetColors.forEach(c => {
+    const dot = document.createElement('div');
+    dot.className = 'preset-dot';
+    dot.style.background = c;
+    dot.title = c;
+    dot.onclick = () => {
+      document.getElementById('colorHexInput').value = c;
+      document.getElementById('colorSwatch').style.background = c;
+      hexToHsv(c);
+    };
+    container.appendChild(dot);
+  });
+}
+
+function drawGradient() {
+  const w = gradCanvas.width, h = gradCanvas.height;
+  const hueColor = `hsl(${currentHue}, 100%, 50%)`;
+
+  // White gradient (left to right)
+  const wGrad = gradCtx.createLinearGradient(0, 0, w, 0);
+  wGrad.addColorStop(0, 'rgba(255,255,255,1)');
+  wGrad.addColorStop(1, hueColor);
+  gradCtx.fillStyle = wGrad;
+  gradCtx.fillRect(0, 0, w, h);
+
+  // Black gradient (top to bottom)
+  const bGrad = gradCtx.createLinearGradient(0, 0, 0, h);
+  bGrad.addColorStop(0, 'rgba(0,0,0,0)');
+  bGrad.addColorStop(1, 'rgba(0,0,0,1)');
+  gradCtx.fillStyle = bGrad;
+  gradCtx.fillRect(0, 0, w, h);
+
+  // Draw cursor
+  const cx = colorPos.x * w;
+  const cy = colorPos.y * h;
+  gradCtx.beginPath();
+  gradCtx.arc(cx, cy, 7, 0, Math.PI * 2);
+  gradCtx.strokeStyle = 'white';
+  gradCtx.lineWidth = 2;
+  gradCtx.stroke();
+  gradCtx.beginPath();
+  gradCtx.arc(cx, cy, 5, 0, Math.PI * 2);
+  gradCtx.strokeStyle = 'rgba(0,0,0,0.5)';
+  gradCtx.lineWidth = 1.5;
+  gradCtx.stroke();
+}
+
+function updateGradient() {
+  currentHue = parseInt(document.getElementById('hueSlider').value);
+  drawGradient();
+  pickColorAt(colorPos.x, colorPos.y);
+}
+
+function onGradMouseDown(e) {
+  updateFromEvent(e);
+  const move = (ev) => updateFromEvent(ev);
+  const up = () => { document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', up); };
+  document.addEventListener('mousemove', move);
+  document.addEventListener('mouseup', up);
+}
+
+function onGradTouch(e) {
+  e.preventDefault();
+  updateFromTouch(e.touches[0]);
+  const move = (ev) => updateFromTouch(ev.touches[0]);
+  const up = () => { document.removeEventListener('touchmove', move); document.removeEventListener('touchend', up); };
+  document.addEventListener('touchmove', move, { passive: false });
+  document.addEventListener('touchend', up);
+}
+
+function updateFromEvent(e) {
+  const rect = gradCanvas.getBoundingClientRect();
+  const scaleX = gradCanvas.width / rect.width;
+  const scaleY = gradCanvas.height / rect.height;
+  const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+  colorPos = { x, y };
+  drawGradient();
+  pickColorAt(x, y);
+}
+
+function updateFromTouch(touch) {
+  const rect = gradCanvas.getBoundingClientRect();
+  const x = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+  const y = Math.max(0, Math.min(1, (touch.clientY - rect.top) / rect.height));
+  colorPos = { x, y };
+  drawGradient();
+  pickColorAt(x, y);
+}
+
+function pickColorAt(x, y) {
+  const pixel = gradCtx.getImageData(Math.round(x * gradCanvas.width), Math.round(y * gradCanvas.height), 1, 1).data;
+  const hex = rgbToHex(pixel[0], pixel[1], pixel[2]);
+  document.getElementById('colorSwatch').style.background = hex;
+  document.getElementById('colorHexInput').value = hex;
+}
+
+function rgbToHex(r, g, b) {
+  return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+}
+
+function hexInputChanged(val) {
+  if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+    document.getElementById('colorSwatch').style.background = val;
+    hexToHsv(val);
+  }
+}
+
+function hexToHsv(hex) {
+  let r = parseInt(hex.slice(1, 3), 16) / 255;
+  let g = parseInt(hex.slice(3, 5), 16) / 255;
+  let b = parseInt(hex.slice(5, 7), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = max === 0 ? 0 : (max - min) / max;
+  if (max !== min) {
+    if (max === r) h = ((g - b) / (max - min) + 6) % 6;
+    else if (max === g) h = (b - r) / (max - min) + 2;
+    else h = (r - g) / (max - min) + 4;
+    h *= 60;
+  }
+  currentHue = Math.round(h);
+  document.getElementById('hueSlider').value = currentHue;
+  colorPos = { x: s, y: 1 - max };
+  drawGradient();
+}
+
+function openColorPicker(evId, btn) {
+  currentColorTarget = evId;
+  activeColorBtn = btn;
+  const popup = document.getElementById('colorPopup');
+  popup.classList.add('open');
+
+  const currentColor = eventStates[evId]?.color || '#5865f2';
+  document.getElementById('colorSwatch').style.background = currentColor;
+  document.getElementById('colorHexInput').value = currentColor;
+  hexToHsv(currentColor);
+
+  // Position popup
+  const rect = btn.getBoundingClientRect();
+  let left = rect.left;
+  let top = rect.bottom + 8;
+  if (left + 280 > window.innerWidth) left = window.innerWidth - 290;
+  if (top + 420 > window.innerHeight) top = rect.top - 420;
+  popup.style.left = left + 'px';
+  popup.style.top = top + 'px';
+
+  // init canvas
+  setTimeout(() => { if (!gradCtx) initColorPicker(); else drawGradient(); }, 10);
+  document.addEventListener('click', closePickerOutside, { once: true });
+}
+
+function closePickerOutside(e) {
+  const popup = document.getElementById('colorPopup');
+  if (!popup.contains(e.target) && !activeColorBtn?.contains(e.target)) {
+    closeColorPicker();
+  } else {
+    document.addEventListener('click', closePickerOutside, { once: true });
+  }
+}
+
+function closeColorPicker() {
+  document.getElementById('colorPopup').classList.remove('open');
+  currentColorTarget = null;
+  activeColorBtn = null;
+}
+
+function applyColor() {
+  if (!currentColorTarget) return;
+  const hex = document.getElementById('colorHexInput').value;
+  if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
+  eventStates[currentColorTarget].color = hex;
+  const btn = document.getElementById('col-' + currentColorTarget);
+  if (btn) btn.style.background = hex;
+  closeColorPicker();
+  showToast('Color updated!', '🎨');
+}
+
+// ===== SAVE / RESET =====
+// saveChanges and resetPage defined below in LOAD DASHBOARD section
+
+// ===== TOAST =====
+function showToast(msg, icon = '✅') {
+  const toast = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  toast.querySelector('.toast-icon').textContent = icon;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ===== MOD MODAL =====
+function openModModal(action) {
+  const labels = { ban: '🔨 Ban Member', kick: '👢 Kick Member', timeout: '⏱️ Timeout Member', warn: '⚠️ Warn Member', unban: '🔓 Unban Member', move: '🔀 Move Voice' };
+  showToast(`Opening ${labels[action] || action} panel...`, '🛡️');
+}
+
+// ===== LOAD DASHBOARD FROM API =====
+const guildId = window.location.pathname.split('/').filter(Boolean).pop();
+
+async function loadDashboard() {
+  // 1. Load user info
+  try {
+    const userRes = await fetch('/api/me');
+    if (!userRes.ok) { window.location.href = '/'; return; }
+    const user = await userRes.json();
+    const avEl = document.querySelector('.user-av');
+    if (avEl) avEl.textContent = user.username ? user.username[0].toUpperCase() : 'U';
+    const nmEl = document.querySelector('.user-nm');
+    if (nmEl) nmEl.textContent = user.username || 'User';
+    const tagEl = document.querySelector('.user-tag');
+    if (tagEl) tagEl.textContent = '#' + (user.discriminator || '0000');
+  } catch(e) { console.warn('User load failed', e); }
+
+  // 2. Load REAL channels (text only)
+  try {
+    const chRes = await fetch(`/api/guilds/${guildId}/channels`);
+    if (chRes.ok) {
+      realChannels = await chRes.json();
+      console.log(`✅ Loaded ${realChannels.length} text channels`);
+    }
+  } catch(e) { console.warn('Channel load failed', e); }
+
+  // 3. Load saved settings
+  try {
+    const settingsRes = await fetch(`/api/guilds/${guildId}/settings`);
+    if (settingsRes.ok) {
+      const settings = await settingsRes.json();
+      if (settings.logs) {
+        Object.entries(settings.logs).forEach(([key, val]) => {
+          if (eventStates[key]) {
+            eventStates[key].enabled = val.enabled || false;
+            eventStates[key].channelId = val.channelId || null;
+            eventStates[key].color = val.color || eventStates[key].color;
+            if (val.channelId) {
+              const ch = realChannels.find(c => c.id === val.channelId);
+              if (ch) eventStates[key].channel = ch.name;
+            }
+          }
+        });
+        buildLogEvents();
+      }
+    }
+  } catch(e) { console.warn('Settings load failed', e); }
+
+  // 4. Load real server stats for overview
+  loadStats();
+
+  // 5. Load real audit log
+  loadAuditLog();
+}
+
+// ── Real Stats ────────────────────────────────────────────────────────────────
+async function loadStats() {
+  try {
+    const res = await fetch(`/api/guilds/${guildId}/stats`);
+    if (!res.ok) return;
+    const s = await res.json();
+
+    // Update server name in sidebar
+    const srvNm = document.querySelector('.server-nm');
+    if (srvNm) srvNm.textContent = s.name;
+
+    // Update topbar/header
+    const h2 = document.querySelector('#page-overview .section-header h2');
+    if (h2) h2.textContent = s.name + ' — Overview';
+    const sub = document.querySelector('#page-overview .section-header p');
+    if (sub) sub.textContent = `Real-time stats • Created <t:${s.createdAt}:R> • Boost Level ${s.boostLevel}`;
+
+    // Update stat cards
+    const cards = document.querySelectorAll('#page-overview .stat-card');
+    if (cards[0]) {
+      cards[0].querySelector('.stat-value').textContent = s.members.toLocaleString();
+      cards[0].querySelector('.stat-label').textContent = '👥 Total Members';
+      cards[0].querySelector('.stat-change').textContent = `👤 ${s.humans.toLocaleString()} humans · 🤖 ${s.bots} bots`;
+    }
+    if (cards[1]) {
+      cards[1].querySelector('.stat-value').textContent = s.online.toLocaleString();
+      cards[1].querySelector('.stat-label').textContent = '🟢 Online Now';
+      cards[1].querySelector('.stat-change').style.color = 'var(--accent3)';
+      cards[1].querySelector('.stat-change').textContent = 'Currently online';
+    }
+    if (cards[2]) {
+      cards[2].querySelector('.stat-value').textContent = s.channels;
+      cards[2].querySelector('.stat-label').textContent = '📢 Channels';
+      cards[2].querySelector('.stat-change').textContent = `${s.roles} roles`;
+    }
+    if (cards[3]) {
+      cards[3].querySelector('.stat-value').textContent = s.boosts;
+      cards[3].querySelector('.stat-label').textContent = '🚀 Server Boosts';
+      cards[3].querySelector('.stat-change').textContent = `Level ${s.boostLevel}`;
+    }
+
+    // Update server icon in sidebar
+    if (s.icon) {
+      const avEl = document.querySelector('.server-av');
+      if (avEl) {
+        avEl.style.backgroundImage = `url('${s.icon}')`;
+        avEl.style.backgroundSize = 'cover';
+        avEl.textContent = '';
+      }
+    }
+  } catch(e) { console.warn('Stats load failed', e); }
+}
+
+// Audit log action label map
+const ACTION_LABELS = {
+  MemberBanAdd: { label: '🔨 Member Banned', badge: 'badge-red' },
+  MemberBanRemove: { label: '🔓 Member Unbanned', badge: 'badge-green' },
+  MemberKick: { label: '👢 Member Kicked', badge: 'badge-red' },
+  MemberUpdate: { label: '✏️ Member Updated', badge: 'badge-pink' },
+  MemberRoleUpdate: { label: '🏷️ Role Updated', badge: 'badge-blue' },
+  MessageDelete: { label: '🗑️ Message Deleted', badge: 'badge-yellow' },
+  ChannelCreate: { label: '➕ Channel Created', badge: 'badge-green' },
+  ChannelDelete: { label: '➖ Channel Deleted', badge: 'badge-red' },
+  ChannelUpdate: { label: '🔧 Channel Updated', badge: 'badge-blue' },
+  RoleCreate: { label: '✨ Role Created', badge: 'badge-green' },
+  RoleDelete: { label: '💥 Role Deleted', badge: 'badge-red' },
+  RoleUpdate: { label: '🎨 Role Updated', badge: 'badge-blue' },
+  GuildUpdate: { label: '🏠 Server Updated', badge: 'badge-blue' },
+  InviteCreate: { label: '📨 Invite Created', badge: 'badge-pink' },
+  InviteDelete: { label: '📨 Invite Deleted', badge: 'badge-red' },
+  WebhookCreate: { label: '🔗 Webhook Created', badge: 'badge-blue' },
+  EmojiCreate: { label: '😀 Emoji Added', badge: 'badge-green' },
+  EmojiDelete: { label: '😀 Emoji Deleted', badge: 'badge-red' },
+};
+
+function timeAgo(ts) {
+  const diff = Date.now() - ts;
+  const s = Math.floor(diff / 1000);
+  if (s < 60) return s + 's ago';
+  const m = Math.floor(s / 60);
+  if (m < 60) return m + 'm ago';
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + 'h ago';
+  return Math.floor(h / 24) + 'd ago';
+}
+
+// ── Real Audit Log ────────────────────────────────────────────────────────────
+async function loadAuditLog() {
+  try {
+    const res = await fetch(`/api/guilds/${guildId}/audit`);
+    if (!res.ok) return;
+    const entries = await res.json();
+    renderAuditTable(entries, 'recentAuditTbody', 6);
+    renderAuditTable(entries, 'fullAuditTbody', 25);
+  } catch(e) { console.warn('Audit load failed', e); }
+}
+
+function renderAuditTable(entries, tbodyId, limit) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  const shown = entries.slice(0, limit);
+  shown.forEach(e => {
+    const info = ACTION_LABELS[e.action] || { label: '📋 ' + e.action, badge: 'badge-blue' };
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><span class="badge ${info.badge}">${info.label}</span></td>
+      <td>${e.executor ? `<div class="td-user"><div class="td-avatar">${e.executor.tag?.[0]||'?'}</div>${e.executor.tag||'Unknown'}</div>` : '<span style="color:var(--text-muted)">Unknown</span>'}</td>
+      <td>${e.target?.tag || e.target?.id || '—'}</td>
+      <td style="color:var(--text-muted);font-size:13px;">${e.reason || '—'}</td>
+      <td style="color:var(--text-muted);font-family:'JetBrains Mono',monospace;font-size:12px;">${timeAgo(e.createdAt)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  if (shown.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text-muted);">No audit log entries found.</td></tr>';
+  }
+}
+
+// ===== SAVE to API =====
+async function saveChanges() {
+  const payload = { logs: {} };
+  Object.entries(eventStates).forEach(([key, val]) => {
+    payload.logs[key] = {
+      enabled: val.enabled || false,
+      channelId: val.channelId || null,
+      color: val.color || '#5865f2'
+    };
+  });
+
+  try {
+    const res = await fetch(`/api/guilds/${guildId}/settings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      showToast('Settings saved! Logs are now active in Discord. ✅', '✅');
+    } else {
+      const err = await res.json().catch(() => ({}));
+      showToast('Error saving: ' + (err.error || 'Unknown error'), '❌');
+    }
+  } catch(e) {
+    showToast('Network error. Check server is running.', '❌');
+  }
+}
+
+function resetPage() {
+  showToast('Reset to defaults.', '🔄');
+}
+
+// ===== INIT =====
+buildLogEvents();   // build UI with defaults first
+loadDashboard();    // then load real data from API
+</script>
+</body>
+</html>

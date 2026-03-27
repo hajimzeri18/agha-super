@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Select Server — Agha Super Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0b0f;--bg2:#0f1117;--card:#13151c;--card2:#181b24;--border:#1e2130;--text:#ffffff;--muted:#8b8fa8;--dim:#4a4d5e;--accent:#5865f2;--accent2:#eb459e;--green:#57f287;--red:#ed4245;--gold:#fee75c;--grad:linear-gradient(135deg,#5865f2 0%,#eb459e 100%);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.bg-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:0.08;animation:float 10s ease-in-out infinite;}
+.orb1{width:600px;height:600px;background:#5865f2;top:-200px;right:-100px;}
+.orb2{width:500px;height:500px;background:#eb459e;bottom:-150px;left:-100px;animation-delay:-5s;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;height:68px;background:rgba(10,11,15,0.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 40px;z-index:100;}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-icon{width:40px;height:40px;background:var(--grad);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:white;box-shadow:0 0 20px rgba(88,101,242,0.4);}
+.logo-name{font-size:17px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.logo-dev{font-size:10px;color:var(--dim);font-family:'JetBrains Mono',monospace;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.user-info{display:flex;align-items:center;gap:10px;}
+.user-av{width:36px;height:36px;border-radius:50%;border:2px solid rgba(88,101,242,0.5);object-fit:cover;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white;flex-shrink:0;}
+.user-av img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
+.user-name{font-size:14px;font-weight:600;color:var(--muted);}
+.btn-logout{background:transparent;border:1px solid var(--border);color:var(--dim);font-size:13px;font-weight:500;padding:6px 14px;border-radius:8px;cursor:pointer;transition:all 0.2s;font-family:'Outfit',sans-serif;text-decoration:none;}
+.btn-logout:hover{border-color:var(--red);color:var(--red);}
+
+/* MAIN */
+main{position:relative;z-index:1;padding:100px 40px 80px;max-width:1100px;margin:0 auto;}
+
+/* PAGE HEADER */
+.page-head{margin-bottom:36px;animation:fadeup 0.5s ease both;}
+.page-head h1{font-size:36px;font-weight:900;letter-spacing:-1px;margin-bottom:8px;}
+.page-head p{color:var(--muted);font-size:15px;}
+.page-head p strong{color:var(--gold);}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:36px;animation:fadeup 0.5s ease 0.1s both;}
+.search-input{width:100%;max-width:380px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px 12px 44px;color:var(--text);font-size:15px;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s;}
+.search-input:focus{border-color:var(--accent);}
+.search-input::placeholder{color:var(--dim);}
+.search-ico{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:15px;}
+
+/* SECTION LABEL */
+.sec-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:16px;font-family:'JetBrains Mono',monospace;}
+
+/* SERVER GRID */
+.srv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-bottom:40px;}
+
+/* SERVER CARD */
+.srv-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:28px 18px;display:flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;transition:all 0.3s;text-decoration:none;color:inherit;}
+.srv-card:hover{border-color:rgba(88,101,242,0.5);transform:translateY(-4px);box-shadow:0 16px 40px rgba(88,101,242,0.18);}
+.srv-icon{width:70px;height:70px;border-radius:20px;object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:white;flex-shrink:0;overflow:hidden;}
+.srv-icon img{width:100%;height:100%;object-fit:cover;border-radius:20px;}
+.srv-name{font-size:14px;font-weight:700;text-align:center;line-height:1.3;}
+.srv-members{font-size:12px;color:var(--dim);}
+.srv-status{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;}
+.dot{width:6px;height:6px;border-radius:50%;}
+.dot-green{background:var(--green);}
+.dot-gray{background:var(--dim);}
+.txt-green{color:var(--green);}
+.txt-gray{color:var(--dim);}
+.srv-btn{width:100%;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:13px;font-weight:600;padding:9px;border-radius:10px;cursor:pointer;transition:all 0.2s;font-family:'Outfit',sans-serif;}
+.srv-card:hover .srv-btn,.srv-btn:hover{background:var(--accent);border-color:var(--accent);color:white;}
+
+/* ADD CARD */
+.add-card{background:transparent;border:2px dashed var(--border);border-radius:18px;padding:28px 18px;display:flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;transition:all 0.3s;text-decoration:none;color:var(--dim);}
+.add-card:hover{border-color:var(--accent);color:var(--accent);}
+.add-ico{width:70px;height:70px;border-radius:20px;border:2px dashed currentColor;display:flex;align-items:center;justify-content:center;font-size:28px;}
+.add-lbl{font-size:14px;font-weight:600;}
+
+/* LOADING STATE */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:60px 0;color:var(--dim);}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-size:15px;color:var(--dim);}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:60px 20px;color:var(--dim);}
+.empty-ico{font-size:48px;margin-bottom:16px;}
+.empty h3{font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.empty p{font-size:14px;line-height:1.6;margin-bottom:24px;}
+.empty a{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:white;font-size:14px;font-weight:600;padding:12px 24px;border-radius:10px;text-decoration:none;transition:all 0.2s;font-family:'Outfit',sans-serif;}
+.empty a:hover{background:#4752c4;transform:translateY(-1px);}
+
+@keyframes fadeup{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:600px){main{padding:90px 16px 60px;}nav{padding:0 16px;}.srv-grid{grid-template-columns:repeat(2,1fr);}.user-name{display:none;}}
+</style>
+</head>
+<body>
+<div class="bg-wrap"><div class="orb orb1"></div><div class="orb orb2"></div></div>
+
+<nav>
+  <a href="/" class="logo">
+    <div class="logo-icon">A</div>
+    <div><div class="logo-name">Agha Super Bot</div><div class="logo-dev">by dev-h46</div></div>
+  </a>
+  <div class="nav-right">
+    <div class="user-info">
+      <div class="user-av" id="userAv"></div>
+      <span class="user-name" id="userName">Loading...</span>
+    </div>
+    <a href="/auth/logout" class="btn-logout">Logout</a>
+  </div>
+</nav>
+
+<main>
+  <div class="page-head">
+    <h1>Select a Server</h1>
+    <p>Only servers where you have <strong>Administrator</strong> permission are shown.</p>
+  </div>
+
+  <div class="search-wrap">
+    <span class="search-ico">🔍</span>
+    <input class="search-input" type="text" id="searchInput" placeholder="Search servers..." oninput="filterServers(this.value)">
+  </div>
+
+  <!-- Active (bot installed) -->
+  <div id="activeSection">
+    <div class="sec-lbl">// My Servers — Bot Active</div>
+    <div class="srv-grid" id="activeGrid">
+      <div class="loading"><div class="spinner"></div><div class="loading-text">Loading servers...</div></div>
+    </div>
+  </div>
+
+  <!-- Inactive (no bot) -->
+  <div id="inactiveSection" style="display:none;">
+    <div class="sec-lbl">// My Servers — Add Bot</div>
+    <div class="srv-grid" id="inactiveGrid"></div>
+  </div>
+</main>
+
+<script>
+let allGuilds = [];
+
+// ── Load user info ────────────────────────────────────────────────────────────
+async function loadUser() {
+  try {
+    const res = await fetch('/api/me');
+    if (!res.ok) { window.location.href = '/'; return; }
+    const user = await res.json();
+
+    const avEl = document.getElementById('userAv');
+    if (user.avatar) {
+      avEl.innerHTML = `<img src="${user.avatar}" alt="${user.username}">`;
+    } else {
+      avEl.textContent = user.username[0].toUpperCase();
+    }
+    document.getElementById('userName').textContent = user.username;
+  } catch(e) {
+    window.location.href = '/';
+  }
+}
+
+// ── Load guilds ───────────────────────────────────────────────────────────────
+async function loadGuilds() {
+  try {
+    const res = await fetch('/api/guilds');
+    if (!res.ok) { window.location.href = '/'; return; }
+    allGuilds = await res.json();
+    renderGuilds(allGuilds);
+  } catch(e) {
+    document.getElementById('activeGrid').innerHTML = `
+      <div class="empty" style="grid-column:1/-1">
+        <div class="empty-ico">⚠️</div>
+        <h3>Failed to load servers</h3>
+        <p>Could not connect to the server. Please try again.</p>
+        <a href="/servers">Retry</a>
+      </div>`;
+  }
+}
+
+// ── Render guild cards ────────────────────────────────────────────────────────
+function renderGuilds(guilds) {
+  const activeGrid = document.getElementById('activeGrid');
+  const inactiveGrid = document.getElementById('inactiveGrid');
+  const inactiveSection = document.getElementById('inactiveSection');
+
+  activeGrid.innerHTML = '';
+  inactiveGrid.innerHTML = '';
+
+  const active = guilds.filter(g => g.hasBot);
+  const inactive = guilds.filter(g => !g.hasBot);
+
+  // Active servers
+  if (active.length === 0) {
+    activeGrid.innerHTML = `
+      <div class="empty" style="grid-column:1/-1">
+        <div class="empty-ico">🤖</div>
+        <h3>Bot not added to any server yet</h3>
+        <p>Add Agha Super Bot to one of your servers to get started with logging and moderation.</p>
+        <a href="https://discord.com/oauth2/authorize?client_id=1469732247388160224&permissions=8&scope=bot%20applications.commands" target="_blank">➕ Add Bot to Server</a>
+      </div>`;
+  } else {
+    active.forEach(g => {
+      const card = document.createElement('a');
+      card.className = 'srv-card';
+      card.href = `/dashboard/${g.id}`;
+      card.dataset.name = g.name.toLowerCase();
+      card.innerHTML = `
+        <div class="srv-icon" style="${g.icon ? '' : 'background:linear-gradient(135deg,#5865f2,#eb459e)'}">
+          ${g.icon ? `<img src="${g.icon}" alt="${escHtml(g.name)}">` : g.name[0].toUpperCase()}
+        </div>
+        <div class="srv-name">${escHtml(g.name)}</div>
+        <div class="srv-members">👥 ${g.memberCount ? g.memberCount.toLocaleString() + ' members' : 'Members'}</div>
+        <div class="srv-status">
+          <div class="dot dot-green"></div>
+          <span class="txt-green">Bot Active</span>
+        </div>
+        <button class="srv-btn">Manage Server →</button>
+      `;
+      activeGrid.appendChild(card);
+    });
+  }
+
+  // Inactive servers
+  if (inactive.length > 0) {
+    inactiveSection.style.display = 'block';
+    inactive.forEach(g => {
+      const card = document.createElement('div');
+      card.className = 'srv-card';
+      card.dataset.name = g.name.toLowerCase();
+      card.onclick = () => inviteToGuild(g.id);
+      card.innerHTML = `
+        <div class="srv-icon" style="${g.icon ? '' : 'background:linear-gradient(135deg,#2c2f33,#4a4d5e)'}">
+          ${g.icon ? `<img src="${g.icon}" alt="${escHtml(g.name)}">` : g.name[0].toUpperCase()}
+        </div>
+        <div class="srv-name">${escHtml(g.name)}</div>
+        <div class="srv-members">👥 Members</div>
+        <div class="srv-status">
+          <div class="dot dot-gray"></div>
+          <span class="txt-gray">Bot Not Added</span>
+        </div>
+        <button class="srv-btn">Invite Bot +</button>
+      `;
+      inactiveGrid.appendChild(card);
+    });
+
+    // Add "another server" card
+    const addCard = document.createElement('a');
+    addCard.className = 'add-card';
+    addCard.href = 'https://discord.com/oauth2/authorize?client_id=1469732247388160224&permissions=8&scope=bot%20applications.commands';
+    addCard.target = '_blank';
+    addCard.innerHTML = `<div class="add-ico">+</div><div class="add-lbl">Add to another server</div>`;
+    inactiveGrid.appendChild(addCard);
+  }
+}
+
+// ── Filter by search ──────────────────────────────────────────────────────────
+function filterServers(val) {
+  const q = val.toLowerCase().trim();
+  if (!q) { renderGuilds(allGuilds); return; }
+  renderGuilds(allGuilds.filter(g => g.name.toLowerCase().includes(q)));
+}
+
+// ── Invite to specific guild ──────────────────────────────────────────────────
+function inviteToGuild(guildId) {
+  const url = `https://discord.com/oauth2/authorize?client_id=1469732247388160224&permissions=8&scope=bot%20applications.commands&guild_id=${guildId}`;
+  window.open(url, '_blank');
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadUser();
+loadGuilds();
+</script>
+</body>
+</html>
